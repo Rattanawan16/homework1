@@ -20,17 +20,30 @@ configurations {
 repositories {
 	mavenCentral()
 }
-
+jar {
+	baseName = 'gs-gradle'
+	version =  '0.1.0'
+}
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE'
 	compile group: 'org.springframework', name: 'spring-orm', version: '5.2.9.RELEASE'
+	compile group: 'org.springframework.data', name: 'spring-data-relational', version: '2.1.0'
+	compile group: 'org.springframework.data', name: 'spring-data-jdbc', version: '2.1.0'
+	compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+	compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.15'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+//	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+//	compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.3.4.RELEASE', ext: 'pom'
 	compile group: 'com.jtransc', name: 'jtransc-rt', version: '0.5.0-ALPHA4'
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -39,6 +52,55 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
+
+
+bootJar {
+	mainClassName = 'com.practice.homework.HomeworkApplication'
+}
+
+// Include dependent libraries in archive.
+//mainClassName = "com.practice.homework.main"
+//
+//jar {
+//	manifest {
+//		attributes "Main-Class": "$mainClassName"
+//	}
+//
+//	from {
+//		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//	}
+//}
+
+//task fatJar(type: Jar) {
+//	manifest {
+//		attributes 'Main-Class': 'com.practice.homework.HomeworkApplication'
+//	}
+//	baseName = project.name + '-all'
+//	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//	with jar
+//}
+
+//apply plugin: 'gradle-one-jar'
+
+//buildscript {
+//	repositories {
+//		mavenCentral()
+//	}
+//	dependencies {
+//		classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+//	}
+//}
+//
+//task myjar(type: OneJar) {
+//	mainClass = 'com.practice.homework.HomeworkApplication.main'
+//}
+//
+task copyToLib(type: Copy) {
+	into "${buildDir}/output/libs"
+	from configurations.runtime
+}
+
+build.dependsOn(copyToLib)
 
 test {
 	useJUnitPlatform()

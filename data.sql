@@ -1,2 +1,4 @@
-insert into public.user values('123456789','TestName', 'TestLast');
-insert into public.user values('123456780','John', 'Don');
+INSERT INTO public."user" (linear_id,id_card_no,login_name,login_password,first_name_th,last_name_th,first_name_en,last_name_en,email,title,birth_date,gender,marriage_status,nationality,mobile,telephone,occupation,company,user_type,user_subtype,login_latest_date,logout_latest_date,state,status,create_by,create_date,change_by,change_date) VALUES 
+('4459953f-9d31-4293-86e6-6e3b844e95c6','1234569871234','firstuser','pwd1234','ชื่อ','นามสกุล','firstNameEn','lastNameEn','test1234@gmail.com','mr','1999-11-02 06:10:53.141','male','single','thai','0811234567','022365478','doctor','Google','userType','userSubtype',NULL,NULL,'N','A','test','2020-11-09 08:57:43.084','test','2020-11-09 08:57:43.084')
+,('1fb23f8b-3398-474b-bdcf-c53993c6a4ba','1234569871234','user1','pwd1234','ชื่อ','นามสกุล','firstNameEn','lastNameEn','test1234@gmail.com','mr','1999-11-02 06:10:53.141','male','single','thai','0811234567','022365478','doctor','Google','userType','userSubtype',NULL,NULL,'N','A','test','2020-11-09 09:00:51.313','test','2020-11-09 09:00:51.313')
+;
