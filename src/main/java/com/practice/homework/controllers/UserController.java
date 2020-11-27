@@ -183,7 +183,7 @@ public class UserController {
         requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
 
         User existingUser = userRepository.findByIdString(request.getId());
-        requiredNotWhen(existingUser != null, MessageCode.E00017, "idCardNo");
+        requiredNotWhen(existingUser != null, MessageCode.E00017, "id");
 
         if (!isNotEmpty(existingUser))
             return ResponseEntity.notFound().build();
