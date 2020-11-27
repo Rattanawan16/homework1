@@ -15,5 +15,12 @@ public interface UserRepository extends CrudRepository<User, String>, UserCustom
         return findByIdAndStatus(id, "A");
     }
 
+    @Query("SELECT * FROM public.user WHERE id_card_no = :idCardNo AND status = :status")
+    User findByIdCardNoAndStatus(@Param("idCardNo") String idCardNo, @Param("status") String status);
+
+    default User findByIdCardNo(@Param("idCardNo") String idCardNo) {
+        return findByIdCardNoAndStatus(idCardNo, "A");
+    }
+
 }
 

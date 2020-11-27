@@ -40,6 +40,8 @@ public class UserController {
         requiredNotWhen(isNotEmpty(id), MessageCode.E00001, "id");
         requiredNotWhen(isUUID(id), MessageCode.E00002, "id");
 
+
+
         User user = userRepository.findByIdString(id);
         return user;
     }
@@ -75,12 +77,25 @@ public class UserController {
         requiredNotWhen(isNotEmpty(request.getEmail()), MessageCode.E00001, "email");
         requiredNotWhen(isNotEmpty(request.getIdCardNo()), MessageCode.E00001, "idCardNo");
 
+        String generateUUID = UUID.randomUUID().toString();
+        // check duplicate UUID
+        User existingUser = userRepository.findByIdString(generateUUID);
+        requiredNotWhen(existingUser != null, MessageCode.E00017, "id");
+
+        if (!isNotEmpty(existingUser))
+            return ResponseEntity.notFound().build();
+
         // check duplicate idCardNo
+        User existingUser2 = userRepository.findByIdCardNo(request.getIdCardNo());
+        requiredNotWhen(existingUser2 != null, MessageCode.E00017, "idCardNo");
+
+        if (!isNotEmpty(existingUser2))
+            return ResponseEntity.notFound().build();
 
         User user = new User();
         Date currentTime = getCurrentDate();
 
-        user.setLinearId(UUID.randomUUID().toString());
+        user.setLinearId(generateUUID);
         user.setFirstNameTh(request.getFirstNameTh());
         user.setFirstNameEn(request.getFirstNameEn());
         user.setLastNameTh(request.getLastNameTh());
@@ -168,6 +183,7 @@ public class UserController {
         requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
 
         User existingUser = userRepository.findByIdString(request.getId());
+        requiredNotWhen(existingUser != null, MessageCode.E00017, "idCardNo");
 
         if (!isNotEmpty(existingUser))
             return ResponseEntity.notFound().build();
