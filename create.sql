@@ -1,6 +1,6 @@
---drop table public.user;
+--drop table user;
 
-create table public.user (
+create table user (
 linear_id varchar(45) NOT NULL,
 id_card_no varchar(45) NULL,
 login_name varchar(45) NULL,
@@ -36,9 +36,9 @@ CONSTRAINT user_un UNIQUE (login_name)
 );
 
 
---drop table public.topic;
+--drop table topic;
 
-create table public.topic (
+create table topic (
 linear_id varchar(45) NOT NULL,
 topic_subject varchar(100) NULL,
 topic_detail text NULL,
