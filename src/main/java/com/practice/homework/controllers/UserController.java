@@ -2,26 +2,37 @@ package com.practice.homework.controllers;
 
 //import com.practice.homework.commons.Constants;
 import com.practice.homework.commons.Constants;
+import com.practice.homework.commons.dto.custom.FlowResponse;
 import com.practice.homework.commons.dto.custom.QueryResponse;
 import com.practice.homework.commons.utils.DataUtils;
+import com.practice.homework.commons.utils.DateUtils;
+import com.practice.homework.commons.utils.RandomUtils;
 import com.practice.homework.commons.utils.MessageCode;
 import com.practice.homework.dto.entity.UserEntityDto;
+import com.practice.homework.entity.Topic;
 import com.practice.homework.entity.User;
+import com.practice.homework.module.topic.core.dto.TopicUpdateDto;
 import com.practice.homework.module.user.core.dto.UserCreateDto;
 import com.practice.homework.module.user.core.dto.UserDeleteDto;
 import com.practice.homework.module.user.core.dto.UserListDto;
 import com.practice.homework.module.user.core.dto.UserUpdateDto;
+import com.practice.homework.repositorys.TopicRepository;
 import com.practice.homework.repositorys.UserRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
+import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.practice.homework.commons.utils.DataUtils.isUUID;
 import static com.practice.homework.commons.utils.DateUtils.getCurrentDate;
+import static com.practice.homework.commons.utils.RandomUtils.generateRandomIndex;
 import static com.practice.homework.commons.utils.ValidationUtils.*;
 
 @RestController
@@ -29,6 +40,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TopicRepository topicRepository;
+    @Autowired
+    private TopicController topicController;
 
     @GetMapping("/users")
     public List<User> findAllUser() throws Exception {
@@ -69,7 +84,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Object> create(@RequestBody UserCreateDto.UserRequest request) throws Exception {
+    public FlowResponse create(@RequestBody UserCreateDto.UserRequest request) throws Exception {
 
         requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
         requiredNotWhen(isNotEmpty(request.getLoginName()), MessageCode.E00001, "loginName");
@@ -79,18 +94,18 @@ public class UserController {
 
         String generateUUID = UUID.randomUUID().toString();
         // check duplicate UUID
-        User existingUser = userRepository.findByIdString(generateUUID);
-        requiredNotWhen(existingUser != null, MessageCode.E00017, "id");
+//        User existingUser = userRepository.findByIdString(generateUUID);
+//        requiredNotWhen(existingUser != null, MessageCode.E00017, "id");
 
-        if (!isNotEmpty(existingUser))
-            return ResponseEntity.notFound().build();
+//        if (!isNotEmpty(existingUser))
+//            return ResponseEntity.notFound().build();
 
         // check duplicate idCardNo
         User existingUser2 = userRepository.findByIdCardNo(request.getIdCardNo());
-        requiredNotWhen(existingUser2 != null, MessageCode.E00017, "idCardNo");
+        requiredNotWhen(existingUser2 == null, MessageCode.E00017, "idCardNo");
 
-        if (!isNotEmpty(existingUser2))
-            return ResponseEntity.notFound().build();
+//        if (!isNotEmpty(existingUser2))
+//            return ResponseEntity.notFound().build();
 
         User user = new User();
         Date currentTime = getCurrentDate();
@@ -126,10 +141,10 @@ public class UserController {
 
         userRepository.save(user);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
-
-        return ResponseEntity.created(location).build();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(user.getId()).toUri();
+//        return ResponseEntity.created(location).build();
+        return new FlowResponse(true, user.getId());
     }
 
     @PutMapping("/users/{id}")
@@ -173,7 +188,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
     @DeleteMapping("/users/{id}")
 //    public void delete(@PathVariable UserDeleteDto.UserDeleteDtoRequest request) throws Exception {
     public ResponseEntity<User> delete(@RequestBody UserDeleteDto.UserDeleteDtoRequest request) throws Exception {
@@ -198,5 +212,152 @@ public class UserController {
         return ResponseEntity.noContent().build();
         //TODO reply update status
 //        userRepository.deleteById(request.getId());
+    }
+
+    @PostMapping("/usersMock")
+    public FlowResponse createMockUser(@RequestBody UserCreateDto.UserMockRequest request) throws Exception {
+        System.out.println(request.getAmount());
+//        List<String> listUUID = new ArrayList<>();
+
+        requiredNotWhen(request.getAmount() != 0, MessageCode.E00001, "amount");
+        ResponseEntity<Object> responseEntity;
+        for (int i = 1 ; i <= request.getAmount() ; i++) {
+            requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
+            requiredNotWhen(isNotEmpty(request.getAmount()), MessageCode.E00001, "amount");
+
+//            String generateUUID = UUID.randomUUID().toString();
+            String generateIdCardNo = String.valueOf(RandomUtils.randomDigits(13));
+            String generateEmail = RandomUtils.generateRandomEmail(20);
+            String generatePwd = RandomUtils.generateRandomPwd(20);
+
+            // check duplicate UUID
+//            User existingUser = userRepository.findByIdString(generateUUID);
+//            requiredNotWhen(existingUser == null, MessageCode.E00017, "id");
+
+//            if (!isNotEmpty(existingUser))
+//                return ResponseEntity.notFound().build();
+
+            // check duplicate idCardNo
+            User existingDuplicateIdCardNo = userRepository.findByIdCardNo(generateIdCardNo);
+            requiredNotWhen(existingDuplicateIdCardNo == null, MessageCode.E00017, "idCardNo");
+
+//            if (!isNotEmpty(existingUser2))
+//                return ResponseEntity.notFound().build();
+
+//            User user = new User();
+            UserCreateDto.UserRequest mockUser = new UserCreateDto.UserRequest();
+            Date currentTime = getCurrentDate();
+
+//            user.setLinearId(generateUUID);
+            mockUser.setFirstNameTh(RandomStringUtils.randomAlphabetic(3,6));
+            mockUser.setFirstNameEn(RandomStringUtils.randomAlphabetic(3,6));
+            mockUser.setLastNameTh(RandomStringUtils.randomAlphabetic(3,6));
+            mockUser.setLastNameEn(RandomStringUtils.randomAlphabetic(3,6));
+            mockUser.setBirthDate(currentTime);
+            mockUser.setEmail(generateEmail);
+            mockUser.setLoginName(generateEmail);
+            mockUser.setLoginPassword(generatePwd);
+            mockUser.setTelephone(RandomStringUtils.randomNumeric(9,9));
+            mockUser.setMobile(RandomStringUtils.randomNumeric(10,10));
+            mockUser.setIdCardNo(generateIdCardNo);
+            mockUser.setTitle(RandomStringUtils.randomAlphabetic(3,3));
+
+            mockUser.setNationality(RandomStringUtils.randomAlphabetic(3,3));
+            mockUser.setGender(RandomStringUtils.randomAlphabetic(3,5));
+            mockUser.setMarriageStatus(RandomStringUtils.randomAlphabetic(5,5));
+            mockUser.setCompany(RandomStringUtils.randomAlphabetic(5,10));
+            mockUser.setOccupation(RandomStringUtils.randomAlphabetic(5,10));
+            mockUser.setUserType(RandomStringUtils.randomAlphabetic(3,3));
+            mockUser.setUserSubtype(RandomStringUtils.randomAlphabetic(3,3));
+            mockUser.setUsername(request.getUsername());
+            FlowResponse flowResponse = this.create(mockUser);
+
+//            user.setState(Constants.State.New);
+//            user.setStatus(Constants.Status.Active);
+//            user.setCreateBy(request.getUsername());
+//            user.setCreateDate(currentTime);
+//            user.setChangeBy(request.getUsername());
+//            user.setChangeDate(currentTime);
+
+//            userRepository.save(user);
+//            System.out.println("UUID: "+generateUUID);
+//            listUUID.add();
+        }
+
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(listUUID).toUri();
+        return new FlowResponse(true);
+    }
+
+
+    @PutMapping("/users/visit")
+    public FlowResponse userVisitTopic(@RequestBody UserUpdateDto.UserVisitTopicRequest request) throws Exception {
+
+        requiredNotWhen(isNotEmpty(request.getUserId()), MessageCode.E00001, "userId");
+        requiredNotWhen(isUUID(request.getUserId()), MessageCode.E00002, "userId");
+        requiredNotWhen(isNotEmpty(request.getTopicId()), MessageCode.E00001, "topicId");
+        requiredNotWhen(isUUID(request.getTopicId()), MessageCode.E00002, "topicId");
+
+        User existingUser = userRepository.findByIdString(request.getUserId());
+        requiredNotWhen(existingUser != null, MessageCode.E00017, "userId");
+
+        System.out.println(request.getTopicId());
+
+        Topic existingTopic = topicRepository.findByIdString(request.getTopicId());
+//        Topic existingTopic = topicController.findById(request.getTopicId());
+        requiredNotWhen(existingTopic != null, MessageCode.E00017, "topicId");
+
+        TopicUpdateDto.TopicUpdateRequest visitReq = new TopicUpdateDto.TopicUpdateRequest();
+        visitReq.setId(request.getTopicId());
+        visitReq.setVisitorAmount(BigDecimal.ONE);
+        visitReq.setLastVisitorBy(request.getUserId());
+        visitReq.setLastVisitorDate(getCurrentDate());
+        topicController.update(visitReq);
+
+        return new FlowResponse(true, request.getTopicId());
+    }
+
+    @PutMapping("/users/randomVisit")
+    public FlowResponse randomUserVisitRandomTopic(@RequestBody UserUpdateDto.RandomUserVisitRandomTopicRequest request) throws Exception {
+
+        requiredNotWhen(request.getAmount() != 0, MessageCode.E00001, "amount");
+        requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
+
+        List<String> listVisitedTopic = new ArrayList<>();
+        List<String> listVisitedUser = new ArrayList<>();
+
+        for (int i = 1 ; i <= request.getAmount() ; i++) {
+            // random user
+            List<User> allUser = this.findAllUser();
+            requiredNotWhen(allUser != null, MessageCode.E00017, "user");
+            System.out.println("================================= ");
+            System.out.println("allUser.size: "+allUser.size());
+            int randomUser = generateRandomIndex(allUser.size());
+            System.out.println("random_int: "+randomUser);
+            User selectedUser = allUser.get(randomUser);
+
+            // random topic
+            List<Topic> allTopic = topicController.findAllTopic();
+            requiredNotWhen(allTopic != null, MessageCode.E00017, "topic");
+
+            System.out.println("allTopic.size: "+allTopic.size());
+            int randomTopic = generateRandomIndex(allTopic.size());
+            System.out.println("random_topic: "+randomTopic);
+            System.out.println("================================= ");
+            Topic selectedTopic = allTopic.get(randomTopic);
+            Boolean isVisitTopic = true;
+            TopicUpdateDto.TopicUpdateRequest visitReq = new TopicUpdateDto.TopicUpdateRequest();
+            visitReq.setId(selectedTopic.getId());
+            visitReq.setVisitorAmount(BigDecimal.ONE);
+            visitReq.setLastVisitorBy(selectedUser.getId());
+            visitReq.setLastVisitorDate(getCurrentDate());
+
+            System.out.println("selectedTopic.getId():"+selectedTopic.getId());
+            topicController.update(visitReq);
+            listVisitedUser.add(selectedUser.getId());
+            listVisitedTopic.add(selectedTopic.getId());
+        }
+
+        return new FlowResponse(true, listVisitedTopic);
     }
 }

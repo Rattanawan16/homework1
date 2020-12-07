@@ -35,4 +35,17 @@ public class UserUpdateDto {
         private String username;
     }
 
+    @Data
+    public static class UserVisitTopicRequest implements Serializable {
+        private String userId;
+        private String topicId;
+        private String username;
+    }
+
+    @Data
+    public static class RandomUserVisitRandomTopicRequest implements Serializable {
+        private int amount;
+        private String username;
+    }
+
 }

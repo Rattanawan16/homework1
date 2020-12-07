@@ -34,3 +34,23 @@ change_date timestamp NOT NULL,
 CONSTRAINT user_pkey PRIMARY KEY (linear_id),
 CONSTRAINT user_un UNIQUE (login_name)
 );
+
+
+--drop table public.topic;
+
+create table public.topic (
+linear_id varchar(45) NOT NULL,
+topic_subject varchar(100) NULL,
+topic_detail text NULL,
+visitor_amount numeric(10,2) NULL,
+last_visitor_date timestamp NULL,
+last_visitor_by varchar(45) NULL,
+
+state varchar(45) NOT NULL,
+status varchar(45) NOT NULL,
+create_by varchar(45) NOT NULL,
+create_date timestamp NOT NULL,
+change_by varchar(45) NOT NULL,
+change_date timestamp NOT NULL,
+CONSTRAINT topic_pkey PRIMARY KEY (linear_id)
+);

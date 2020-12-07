@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, String>, UserCustomRepository {
-    @Query("SELECT * FROM public.user WHERE linear_id = :id AND status = :status")
+    @Query("SELECT * FROM user WHERE linear_id = :id AND status = :status")
     User findByIdAndStatus(@Param("id") String id, @Param("status") String status);
 
     default User findByIdString(@Param("id") String id) {
         return findByIdAndStatus(id, "A");
     }
 
-    @Query("SELECT * FROM public.user WHERE id_card_no = :idCardNo AND status = :status")
+    @Query("SELECT * FROM user WHERE id_card_no = :idCardNo AND status = :status")
     User findByIdCardNoAndStatus(@Param("idCardNo") String idCardNo, @Param("status") String status);
 
     default User findByIdCardNo(@Param("idCardNo") String idCardNo) {

@@ -26,7 +26,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     @Override
     public QueryResponse<List<User>> findByCriteria(UserListDto.UserListRequest request) throws Exception {
         QueryResponse<List<User>> queryResponse = new QueryResponse<>();
-        String dbTableName = "public.user";
+        String dbTableName = "user";
         SQLCriteriaBuilder cb = new SQLCriteriaBuilder();
 
         if ((request.getId() != null)) {

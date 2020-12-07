@@ -33,4 +33,11 @@ public class UserCreateDto {
 
         private String username;
     }
+
+    @Data
+    public static class UserMockRequest implements Serializable {
+
+        private int amount;
+        private String username;
+    }
 }
