@@ -84,13 +84,6 @@ public class TopicController {
         requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
 
         String generateUUID = UUID.randomUUID().toString();
-        // check duplicate UUID
-        Topic existingTopic = topicRepository.findByIdString(generateUUID);
-        requiredNotWhen(existingTopic == null, MessageCode.E00017, "id");
-
-//        if (!isNotEmpty(existingTopic))
-//            return ResponseEntity.notFound().build();
-
         Topic topic = new Topic();
         Date currentTime = getCurrentDate();
 
@@ -125,12 +118,7 @@ public class TopicController {
         requiredNotWhen(existingTopic != null, MessageCode.E00017, "topicId");
         Date currentTime = getCurrentDate();
 
-//        if (!isNotEmpty(existingTopic))
-//            return ResponseEntity.notFound().build();
-//        System.out.println("existingTopic.getVisitorAmount(): "+existingTopic.getVisitorAmount());
-        BigDecimal updateVisitorAmount = new BigDecimal(BigInteger.ZERO);
         if (!request.isUpdateTopic()) {
-            System.out.println("true :"+existingTopic.getVisitorAmount());
             existingTopic.setVisitorAmount(existingTopic.getVisitorAmount().add(BigDecimal.ONE));
             existingTopic.setLastVisitorBy(request.getLastVisitorBy() != null ? request.getLastVisitorBy() : existingTopic.getLastVisitorBy());
             existingTopic.setLastVisitorDate(request.getLastVisitorDate() != null ? request.getLastVisitorDate() : existingTopic.getLastVisitorDate());
@@ -143,7 +131,6 @@ public class TopicController {
             existingTopic.setVisitorAmount(request.getVisitorAmount() != null ? request.getVisitorAmount() : existingTopic.getVisitorAmount());
             existingTopic.setLastVisitorBy(request.getLastVisitorBy() != null ? request.getLastVisitorBy() : existingTopic.getLastVisitorBy());
             existingTopic.setLastVisitorDate(request.getLastVisitorDate() != null ? request.getLastVisitorDate() : existingTopic.getLastVisitorDate());
-
             existingTopic.setChangeDate(currentTime);
             existingTopic.setChangeBy(request.getUsername() != null ? request.getUsername() : request.getLastVisitorBy());
             existingTopic.setNewEntity(false);
@@ -164,36 +151,13 @@ public class TopicController {
             requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
             requiredNotWhen(isNotEmpty(request.getAmount()), MessageCode.E00001, "amount");
 
-//            String generateUUID = UUID.randomUUID().toString();
-            // check duplicate UUID
-//            Topic existingTopic = topicRepository.findByIdString(generateUUID);
-//            requiredNotWhen(existingTopic == null, MessageCode.E00017, "id");
-
             TopicCreateDto.TopicRequest mockTopic = new TopicCreateDto.TopicRequest();
-
-//            Topic topic = new Topic();
-//            topic.setLinearId(generateUUID);
             mockTopic.setTopicSubject(RandomStringUtils.randomAlphabetic(3,6));
             mockTopic.setTopicDetail(RandomStringUtils.randomAlphabetic(10,20));
             mockTopic.setUsername(request.getUsername());
             FlowResponse flowResponse = this.createTopic(mockTopic);
-
-//            topic.setState(Constants.State.New);
-//            topic.setStatus(Constants.Status.Active);
-//            topic.setCreateBy(request.getUsername());
-//            topic.setCreateDate(currentTime);
-//            topic.setChangeBy(request.getUsername());
-//            topic.setChangeDate(currentTime);
-
-//            topicRepository.save(topic);
-//            System.out.println("UUID: "+generateUUID);
-
         }
 
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(listUUID).toUri();
-//        return ResponseEntity.created(location).build();
-//        return ResponseEntity.ok();
         return new FlowResponse(true);
     }
 

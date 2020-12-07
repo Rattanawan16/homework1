@@ -93,19 +93,10 @@ public class UserController {
         requiredNotWhen(isNotEmpty(request.getIdCardNo()), MessageCode.E00001, "idCardNo");
 
         String generateUUID = UUID.randomUUID().toString();
-        // check duplicate UUID
-//        User existingUser = userRepository.findByIdString(generateUUID);
-//        requiredNotWhen(existingUser != null, MessageCode.E00017, "id");
-
-//        if (!isNotEmpty(existingUser))
-//            return ResponseEntity.notFound().build();
 
         // check duplicate idCardNo
         User existingUser2 = userRepository.findByIdCardNo(request.getIdCardNo());
         requiredNotWhen(existingUser2 == null, MessageCode.E00017, "idCardNo");
-
-//        if (!isNotEmpty(existingUser2))
-//            return ResponseEntity.notFound().build();
 
         User user = new User();
         Date currentTime = getCurrentDate();
@@ -230,7 +221,7 @@ public class UserController {
             String generateEmail = RandomUtils.generateRandomEmail(20);
             String generatePwd = RandomUtils.generateRandomPwd(20);
 
-            // check duplicate UUID
+            // TODO check duplicate email
 //            User existingUser = userRepository.findByIdString(generateUUID);
 //            requiredNotWhen(existingUser == null, MessageCode.E00017, "id");
 
@@ -241,14 +232,10 @@ public class UserController {
             User existingDuplicateIdCardNo = userRepository.findByIdCardNo(generateIdCardNo);
             requiredNotWhen(existingDuplicateIdCardNo == null, MessageCode.E00017, "idCardNo");
 
-//            if (!isNotEmpty(existingUser2))
-//                return ResponseEntity.notFound().build();
-
 //            User user = new User();
             UserCreateDto.UserRequest mockUser = new UserCreateDto.UserRequest();
             Date currentTime = getCurrentDate();
 
-//            user.setLinearId(generateUUID);
             mockUser.setFirstNameTh(RandomStringUtils.randomAlphabetic(3,6));
             mockUser.setFirstNameEn(RandomStringUtils.randomAlphabetic(3,6));
             mockUser.setLastNameTh(RandomStringUtils.randomAlphabetic(3,6));
@@ -304,7 +291,6 @@ public class UserController {
         System.out.println(request.getTopicId());
 
         Topic existingTopic = topicRepository.findByIdString(request.getTopicId());
-//        Topic existingTopic = topicController.findById(request.getTopicId());
         requiredNotWhen(existingTopic != null, MessageCode.E00017, "topicId");
 
         TopicUpdateDto.TopicUpdateRequest visitReq = new TopicUpdateDto.TopicUpdateRequest();
@@ -330,29 +316,28 @@ public class UserController {
             // random user
             List<User> allUser = this.findAllUser();
             requiredNotWhen(allUser != null, MessageCode.E00017, "user");
-            System.out.println("================================= ");
-            System.out.println("allUser.size: "+allUser.size());
+//            System.out.println("================================= ");
+//            System.out.println("allUser.size: "+allUser.size());
             int randomUser = generateRandomIndex(allUser.size());
-            System.out.println("random_int: "+randomUser);
+//            System.out.println("random_int: "+randomUser);
             User selectedUser = allUser.get(randomUser);
 
             // random topic
             List<Topic> allTopic = topicController.findAllTopic();
             requiredNotWhen(allTopic != null, MessageCode.E00017, "topic");
 
-            System.out.println("allTopic.size: "+allTopic.size());
+//            System.out.println("allTopic.size: "+allTopic.size());
             int randomTopic = generateRandomIndex(allTopic.size());
-            System.out.println("random_topic: "+randomTopic);
-            System.out.println("================================= ");
+//            System.out.println("random_topic: "+randomTopic);
+//            System.out.println("================================= ");
             Topic selectedTopic = allTopic.get(randomTopic);
-            Boolean isVisitTopic = true;
             TopicUpdateDto.TopicUpdateRequest visitReq = new TopicUpdateDto.TopicUpdateRequest();
             visitReq.setId(selectedTopic.getId());
             visitReq.setVisitorAmount(BigDecimal.ONE);
             visitReq.setLastVisitorBy(selectedUser.getId());
             visitReq.setLastVisitorDate(getCurrentDate());
 
-            System.out.println("selectedTopic.getId():"+selectedTopic.getId());
+//            System.out.println("selectedTopic.getId():"+selectedTopic.getId());
             topicController.update(visitReq);
             listVisitedUser.add(selectedUser.getId());
             listVisitedTopic.add(selectedTopic.getId());
