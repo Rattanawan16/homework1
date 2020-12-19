@@ -1,35 +1,21 @@
 package com.practice.homework.controllers;
 
-//import com.practice.homework.commons.Constants;
 import com.practice.homework.commons.Constants;
 import com.practice.homework.commons.dto.custom.FlowResponse;
 import com.practice.homework.commons.dto.custom.QueryResponse;
 import com.practice.homework.commons.utils.DataUtils;
 import com.practice.homework.commons.utils.MessageCode;
-import com.practice.homework.commons.utils.RandomUtils;
 import com.practice.homework.dto.entity.TopicEntityDto;
-import com.practice.homework.dto.entity.UserEntityDto;
 import com.practice.homework.entity.Topic;
-import com.practice.homework.entity.User;
 import com.practice.homework.module.topic.core.dto.TopicCreateDto;
 import com.practice.homework.module.topic.core.dto.TopicListDto;
 import com.practice.homework.module.topic.core.dto.TopicUpdateDto;
-import com.practice.homework.module.user.core.dto.UserCreateDto;
-import com.practice.homework.module.user.core.dto.UserDeleteDto;
-import com.practice.homework.module.user.core.dto.UserListDto;
-import com.practice.homework.module.user.core.dto.UserUpdateDto;
 import com.practice.homework.repositorys.TopicRepository;
-import com.practice.homework.repositorys.UserRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URI;
-import java.time.LocalDate;
 import java.util.*;
 
 import static com.practice.homework.commons.utils.DataUtils.isUUID;
@@ -112,18 +98,18 @@ public class TopicController {
 
         requiredNotWhen(isNotEmpty(request.getId()), MessageCode.E00001, "id");
         requiredNotWhen(isUUID(request.getId()), MessageCode.E00002, "id");
+        requiredNotWhen(isNotEmpty(request.getUsername()), MessageCode.E00001, "username");
 
-        System.out.println("request.getId():"+request.getId());
         Topic existingTopic = topicRepository.findByIdString(request.getId());
         requiredNotWhen(existingTopic != null, MessageCode.E00017, "topicId");
-        Date currentTime = getCurrentDate();
 
-        if (!request.isUpdateTopic()) {
+        Date currentTime = getCurrentDate();
+        if (request.isVisitTopic()) {
             existingTopic.setVisitorAmount(existingTopic.getVisitorAmount().add(BigDecimal.ONE));
             existingTopic.setLastVisitorBy(request.getLastVisitorBy() != null ? request.getLastVisitorBy() : existingTopic.getLastVisitorBy());
             existingTopic.setLastVisitorDate(request.getLastVisitorDate() != null ? request.getLastVisitorDate() : existingTopic.getLastVisitorDate());
             existingTopic.setChangeDate(currentTime);
-            existingTopic.setChangeBy(request.getUsername() != null ? request.getUsername() : request.getLastVisitorBy());
+            existingTopic.setChangeBy(request.getUsername() != null ? request.getUsername() : request.getUsername());
             existingTopic.setNewEntity(false);
         } else {
             existingTopic.setTopicSubject(request.getTopicSubject() != null ? request.getTopicSubject() : existingTopic.getTopicSubject());
@@ -132,7 +118,7 @@ public class TopicController {
             existingTopic.setLastVisitorBy(request.getLastVisitorBy() != null ? request.getLastVisitorBy() : existingTopic.getLastVisitorBy());
             existingTopic.setLastVisitorDate(request.getLastVisitorDate() != null ? request.getLastVisitorDate() : existingTopic.getLastVisitorDate());
             existingTopic.setChangeDate(currentTime);
-            existingTopic.setChangeBy(request.getUsername() != null ? request.getUsername() : request.getLastVisitorBy());
+            existingTopic.setChangeBy(request.getUsername() != null ? request.getUsername() : request.getUsername());
             existingTopic.setNewEntity(false);
         }
         topicRepository.save(existingTopic);

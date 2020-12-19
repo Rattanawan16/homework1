@@ -1,7 +1,6 @@
 package com.practice.homework.dto.entity;
 
 import com.practice.homework.entity.Topic;
-import com.practice.homework.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

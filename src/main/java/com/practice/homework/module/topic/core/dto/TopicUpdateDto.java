@@ -16,7 +16,7 @@ public class TopicUpdateDto {
         private BigDecimal visitorAmount;
         private Date lastVisitorDate;
         private String lastVisitorBy;
-        private boolean isUpdateTopic;
+        private boolean isVisitTopic;
         private String username;
 
     }

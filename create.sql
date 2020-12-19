@@ -1,6 +1,8 @@
+CREATE SCHEMA IF NOT exists homework;
+
 --drop table user;
 
-create table user (
+create table member (
 linear_id varchar(45) NOT NULL,
 id_card_no varchar(45) NULL,
 login_name varchar(45) NULL,
@@ -20,8 +22,8 @@ mobile varchar(45) NULL,
 telephone varchar(45) NULL,
 occupation varchar(50) NULL,
 company varchar(50) NULL,
-user_type varchar(50) NULL,
-user_subtype varchar(50) NULL,
+member_type varchar(50) NULL,
+member_subtype varchar(50) NULL,
 login_latest_date timestamp NULL,
 logout_latest_date timestamp NULL,
 
@@ -31,8 +33,8 @@ create_by varchar(45) NOT NULL,
 create_date timestamp NOT NULL,
 change_by varchar(45) NOT NULL,
 change_date timestamp NOT NULL,
-CONSTRAINT user_pkey PRIMARY KEY (linear_id),
-CONSTRAINT user_un UNIQUE (login_name)
+CONSTRAINT member_pkey PRIMARY KEY (linear_id),
+CONSTRAINT member_un UNIQUE (login_name)
 );
 
 

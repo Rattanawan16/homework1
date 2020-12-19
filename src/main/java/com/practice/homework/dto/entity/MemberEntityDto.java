@@ -1,6 +1,6 @@
 package com.practice.homework.dto.entity;
 
-import com.practice.homework.entity.User;
+import com.practice.homework.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntityDto {
+public class MemberEntityDto {
 
-    private User state;
-    private UserEntityInfoDto info;
+    private Member state;
+    private MemberEntityInfoDto info;
 
-    public UserEntityDto(User state) {
+    public MemberEntityDto(Member state) {
         this.state = state;
     }
 
     @Data
     @AllArgsConstructor
-    public static class UserEntityInfoDto {
+    public static class MemberEntityInfoDto {
 
     }
 }

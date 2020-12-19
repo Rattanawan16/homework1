@@ -1,4 +1,4 @@
-package com.practice.homework.module.user.core.dto;
+package com.practice.homework.module.member.core.dto;
 
 import lombok.Data;
 import org.springframework.data.relational.core.mapping.Column;
@@ -6,9 +6,9 @@ import org.springframework.data.relational.core.mapping.Column;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserCreateDto {
+public class MemberCreateDto {
     @Data
-    public static class UserRequest implements Serializable {
+    public static class MemberRequest implements Serializable {
 
         private String idCardNo;
         private String loginName;
@@ -28,14 +28,14 @@ public class UserCreateDto {
         private String telephone;
         private String occupation;
         private String company;
-        private String userType;
-        private String userSubtype;
+        private String memberType;
+        private String memberSubtype;
 
         private String username;
     }
 
     @Data
-    public static class UserMockRequest implements Serializable {
+    public static class MemberMockRequest implements Serializable {
 
         private int amount;
         private String username;

@@ -1,7 +1,6 @@
 package com.practice.homework.repositorys;
 
 import com.practice.homework.entity.Topic;
-import com.practice.homework.entity.User;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

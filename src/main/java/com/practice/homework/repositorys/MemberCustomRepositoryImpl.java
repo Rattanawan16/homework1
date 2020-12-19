@@ -6,8 +6,8 @@ import com.practice.homework.commons.dto.custom.QueryResponse;
 import com.practice.homework.commons.utils.DataUtils;
 import com.practice.homework.commons.utils.SQLCriteriaBuilder;
 import com.practice.homework.commons.utils.SQLParameter;
-import com.practice.homework.entity.User;
-import com.practice.homework.module.user.core.dto.UserListDto;
+import com.practice.homework.entity.Member;
+import com.practice.homework.module.member.core.dto.MemberListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,16 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class UserCustomRepositoryImpl implements UserCustomRepository {
+public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Transactional(readOnly = true)
     @Override
-    public QueryResponse<List<User>> findByCriteria(UserListDto.UserListRequest request) throws Exception {
-        QueryResponse<List<User>> queryResponse = new QueryResponse<>();
-        String dbTableName = "user";
+    public QueryResponse<List<Member>> findByCriteria(MemberListDto.MemberListRequest request) throws Exception {
+        QueryResponse<List<Member>> queryResponse = new QueryResponse<>();
+        String dbTableName = "member";
         SQLCriteriaBuilder cb = new SQLCriteriaBuilder();
 
         if ((request.getId() != null)) {
@@ -84,11 +84,11 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         if ((request.getCompany() != null)) {
             cb.addQuery("AND company like : company", SQLParameter.of("company",  '%' + request.getCompany() + '%'));
         }
-        if ((request.getUserType() != null)) {
-            cb.addQuery("AND user_type = :userType", SQLParameter.of("userType", request.getUserType()));
+        if ((request.getMemberType() != null)) {
+            cb.addQuery("AND member_type = :memberType", SQLParameter.of("memberType", request.getMemberType()));
         }
-        if ((request.getUserSubtype() != null)) {
-            cb.addQuery("AND user_subtype = :userSubtype", SQLParameter.of("userSubtype", request.getUserSubtype()));
+        if ((request.getMemberSubtype() != null)) {
+            cb.addQuery("AND member_subtype = :memberSubtype", SQLParameter.of("memberSubtype", request.getMemberSubtype()));
         }
         if ((request.getLoginLatestDateFrom() != null && request.getLoginLatestDateTo() != null)) {
             cb.addQuery(" AND login_latest_date BETWEEN :loginLatestDateFrom AND :loginLatestDateTo ",
@@ -152,7 +152,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                     SQLParameter.of("pageSize", pageQuery.getPageSize()),
                     SQLParameter.of("offset", pageQuery.getOffset()));
 
-            List<User> queryResults = jdbcTemplate.query(mainQuery.getSql().toString(), mainQuery.getParameters(), new BeanPropertyRowMapper<>(User.class));
+            List<Member> queryResults = jdbcTemplate.query(mainQuery.getSql().toString(), mainQuery.getParameters(), new BeanPropertyRowMapper<>(Member.class));
             queryResponse.setData(queryResults);
         }
 

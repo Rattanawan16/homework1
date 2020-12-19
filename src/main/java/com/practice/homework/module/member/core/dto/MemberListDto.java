@@ -1,18 +1,18 @@
-package com.practice.homework.module.user.core.dto;
+package com.practice.homework.module.member.core.dto;
 
 import com.practice.homework.commons.dto.custom.PageLimit;
 import com.practice.homework.commons.dto.custom.PageResult;
-import com.practice.homework.dto.entity.UserEntityDto;
+import com.practice.homework.dto.entity.MemberEntityDto;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class UserListDto {
+public class MemberListDto {
 
     @Data
-    public static class UserListRequest implements Serializable {
+    public static class MemberListRequest implements Serializable {
         private String id;
 
         private String idCardNo;
@@ -33,8 +33,8 @@ public class UserListDto {
         private String telephone;
         private String occupation;
         private String company;
-        private String userType;
-        private String userSubtype;
+        private String memberType;
+        private String memberSubtype;
         private Date loginLatestDateFrom;
         private Date loginLatestDateTo;
         private Date logoutLatestDateFrom;
@@ -56,8 +56,8 @@ public class UserListDto {
     }
 
     @Data
-    public static class UserListEntityResponse {
-        private List<UserEntityDto> data;
+    public static class MemberListEntityResponse {
+        private List<MemberEntityDto> data;
         private PageResult page;
     }
 }

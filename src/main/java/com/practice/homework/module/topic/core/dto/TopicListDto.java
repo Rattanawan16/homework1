@@ -3,7 +3,6 @@ package com.practice.homework.module.topic.core.dto;
 import com.practice.homework.commons.dto.custom.PageLimit;
 import com.practice.homework.commons.dto.custom.PageResult;
 import com.practice.homework.dto.entity.TopicEntityDto;
-import com.practice.homework.dto.entity.UserEntityDto;
 import lombok.Data;
 
 import java.io.Serializable;

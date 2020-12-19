@@ -1,14 +1,14 @@
-package com.practice.homework.module.user.core.dto;
+package com.practice.homework.module.member.core.dto;
 
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserUpdateDto {
+public class MemberUpdateDto {
 
     @Data
-    public static class UserUpdateRequest implements Serializable {
+    public static class MemberUpdateRequest implements Serializable {
         private String id;
         private String idCardNo;
         private String loginName;
@@ -28,22 +28,22 @@ public class UserUpdateDto {
         private String telephone;
         private String occupation;
         private String company;
-        private String userType;
-        private String userSubtype;
+        private String memberType;
+        private String memberSubtype;
         private Date loginLatestDate;
         private Date logoutLatestDate;
         private String username;
     }
 
     @Data
-    public static class UserVisitTopicRequest implements Serializable {
-        private String userId;
+    public static class MemberVisitTopicRequest implements Serializable {
+        private String memberId;
         private String topicId;
         private String username;
     }
 
     @Data
-    public static class RandomUserVisitRandomTopicRequest implements Serializable {
+    public static class RandomMemberVisitRandomTopicRequest implements Serializable {
         private int amount;
         private String username;
     }
