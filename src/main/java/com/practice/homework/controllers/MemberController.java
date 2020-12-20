@@ -205,7 +205,7 @@ public class MemberController {
 
     @PostMapping("/membersMock")
     public FlowResponse createMockMember(@RequestBody MemberCreateDto.MemberMockRequest request) throws Exception {
-        System.out.println(request.getAmount());
+//        System.out.println(request.getAmount());
 //        List<String> listUUID = new ArrayList<>();
 
         requiredNotWhen(request.getAmount() != 0, MessageCode.E00001, "amount");
@@ -279,7 +279,7 @@ public class MemberController {
         Member existingMember = memberRepository.findByIdString(request.getMemberId());
         requiredNotWhen(existingMember != null, MessageCode.E00017, "memberId");
 
-        System.out.println(request.getTopicId());
+//        System.out.println(request.getTopicId());
 
         Topic existingTopic = topicRepository.findByIdString(request.getTopicId());
         requiredNotWhen(existingTopic != null, MessageCode.E00017, "topicId");
@@ -329,7 +329,6 @@ public class MemberController {
             visitReq.setLastVisitorDate(getCurrentDate());
             visitReq.setVisitTopic(true);
             visitReq.setUsername(request.getUsername());
-            System.out.println("visitReq: "+visitReq);
 
 //            System.out.println("selectedTopic.getId():"+selectedTopic.getId());
             topicController.update(visitReq);
