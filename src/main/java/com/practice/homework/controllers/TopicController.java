@@ -105,7 +105,7 @@ public class TopicController {
 
         Date currentTime = getCurrentDate();
         if (request.isVisitTopic()) {
-            existingTopic.setVisitorAmount(existingTopic.getVisitorAmount().add(BigDecimal.ONE));
+            existingTopic.setVisitorAmount(existingTopic.getVisitorAmount() != null ? existingTopic.getVisitorAmount().add(BigDecimal.ONE) : BigDecimal.ONE);
             existingTopic.setLastVisitorBy(request.getLastVisitorBy() != null ? request.getLastVisitorBy() : existingTopic.getLastVisitorBy());
             existingTopic.setLastVisitorDate(request.getLastVisitorDate() != null ? request.getLastVisitorDate() : existingTopic.getLastVisitorDate());
             existingTopic.setChangeDate(currentTime);

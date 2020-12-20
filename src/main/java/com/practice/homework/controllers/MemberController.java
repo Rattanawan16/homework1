@@ -328,6 +328,8 @@ public class MemberController {
             visitReq.setLastVisitorBy(selectedMember.getId());
             visitReq.setLastVisitorDate(getCurrentDate());
             visitReq.setVisitTopic(true);
+            visitReq.setUsername(request.getUsername());
+            System.out.println("visitReq: "+visitReq);
 
 //            System.out.println("selectedTopic.getId():"+selectedTopic.getId());
             topicController.update(visitReq);
