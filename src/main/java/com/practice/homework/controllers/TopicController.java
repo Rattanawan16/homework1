@@ -128,7 +128,7 @@ public class TopicController {
 
     @PostMapping("/topicsMock")
     public FlowResponse createMockTopic(@RequestBody TopicCreateDto.TopicMockRequest request) throws Exception {
-        System.out.println(request.getAmount());
+//        System.out.println(request.getAmount());
 //        List<String> listUUID = new ArrayList<>();
 
         requiredNotWhen(request.getAmount() != 0, MessageCode.E00001, "amount");
