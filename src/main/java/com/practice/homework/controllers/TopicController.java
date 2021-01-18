@@ -27,6 +27,8 @@ public class TopicController {
 
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
+    private LineNotifyController lineNotifyController;
 
     @GetMapping("/topics")
     public List<Topic> findAllTopic() throws Exception {
@@ -85,6 +87,8 @@ public class TopicController {
         topic.setChangeDate(currentTime);
 
         topicRepository.save(topic);
+
+        lineNotifyController.sendLineNotifyMessages("New Topic Create!!!");
 
 //        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 //                .buildAndExpand(topic.getId()).toUri();
