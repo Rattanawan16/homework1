@@ -88,7 +88,7 @@ public class TopicController {
 
         topicRepository.save(topic);
 
-        lineNotifyController.sendLineNotifyMessages("New Topic Create!!!");
+        lineNotifyController.sendLineNotifyMessages("New Topic Created!!!");
 
 //        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 //                .buildAndExpand(topic.getId()).toUri();
